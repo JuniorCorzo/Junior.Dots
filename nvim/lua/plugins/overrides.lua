@@ -1,5 +1,28 @@
 -- This file contains the configuration overrides for specific Neovim plugins.
 
+-- Patch treesitter query to remove invalid "tab" node type that crashes noice.nvim
+local function patch_treesitter_query()
+  local query_paths = vim.api.nvim_get_runtime_file("queries/vim/highlights.scm", true)
+  for _, path in ipairs(query_paths) do
+    local f = io.open(path, "r")
+    if f then
+      local content = f:read("*a")
+      f:close()
+      if content:find('"tab"') then
+        local patched = content:gsub('\r?\n%s*"tab"%s*\r?\n', '\n')
+        local fw = io.open(path, "w")
+        if fw then
+          fw:write(patched)
+          fw:close()
+        end
+        vim.treesitter.query.set("vim", "highlights", patched)
+      end
+    end
+  end
+end
+
+patch_treesitter_query()
+
 return {
   -- Change configuration for trouble.nvim
   {
@@ -28,15 +51,12 @@ return {
     -- URL: https://github.com/neovim/nvim-lspconfig
     -- Description: Quickstart configurations for the Neovim LSP client.
     "neovim/nvim-lspconfig",
-    event = "VeryLazy", -- Load this plugin on the 'VeryLazy' event
+    event = { "BufReadPre", "BufNewFile" }, -- Load early so angularls attaches to the first buffer
     opts = {
       inlay_hints = { enabled = false }, -- Disable inlay hints
       servers = {
-        angularls = {
-          -- Configuration for Angular Language Server
-          root_dir = function(fname)
-            return require("lspconfig.util").root_pattern("angular.json", "project.json")(fname)
-          end,
+        jdtls = {
+          enabled = false,
         },
         nil_ls = {
           -- Configuration for nil (Nix Language Server), already installed via nix
