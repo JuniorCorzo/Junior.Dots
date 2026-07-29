@@ -1,5 +1,5 @@
 local jdtls = require("jdtls")
-local root_markers = { "settings.gradle", "build.gradle", "pom.xml", ".git" }
+local root_markers = { "settings.gradle", "settings.gradle.kts", "gradlew", "mvnw", "pom.xml", ".git" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
 
 if root_dir == "" then
@@ -32,10 +32,13 @@ if ok_spring then
   vim.list_extend(bundles, spring_bundles)
 end
 
+local lombok_jar = vim.fn.expand("~/.local/share/nvim/mason/share/jdtls/lombok.jar")
+
 local cmd = {
-  "/home/juniorcorzo/.local/share/nvim/mason/bin/jdtls",
-  "-data", workspace_dir,
-  "-jvm-arg=-javaagent:/home/juniorcorzo/.local/share/nvim/mason/share/jdtls/lombok.jar",
+  vim.fn.expand("~/.local/share/nvim/mason/bin/jdtls"),
+  "-data",
+  workspace_dir,
+  "--jvm-arg=-javaagent:" .. lombok_jar,
 }
 
 local config = {

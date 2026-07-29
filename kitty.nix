@@ -20,7 +20,7 @@
     # │                                  WINDOW                                      │
     # └──────────────────────────────────────────────────────────────────────────────┘
 
-    background_opacity 0.95
+    background_opacity 0.80
     # Kitty does not expose Ghostty's background-blur-radius directly.
 
     window_padding_width 0

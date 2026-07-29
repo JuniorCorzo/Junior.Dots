@@ -13,7 +13,7 @@
   home.activation.installEngram = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
     echo "🔧 Setting up Engram..."
 
-    export PATH="${pkgs.go}/bin:$HOME/go/bin:$PATH"
+    export PATH="${pkgs.go}/bin:${pkgs.gcc}/bin:$HOME/go/bin:$PATH"
     export GOPATH="$HOME/go"
 
     # Check if engram is already installed and working

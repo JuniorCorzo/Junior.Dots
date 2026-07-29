@@ -14,11 +14,11 @@
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, flake-utils, ... }:
     let
       # Support macOS systems only
-      supportedSystems = [ "x86_64-darwin" "aarch64-darwin" ];
+      supportedSystems = [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" ];
       
       # ─── User Configuration ───
       # Change this to your macOS username
-      username = "alanbuscaglia";
+      username = "juniorcorzo";
 
       # Function to create home configuration for a specific system
       mkHomeConfiguration = system:
@@ -77,7 +77,7 @@
             {
               # Personal data
               home.username = username;
-              home.homeDirectory = "/Users/${username}";  # macOS home directory
+              home.homeDirectory = "/home/${username}";  # macOS home directory
               home.stateVersion = "24.11";  # State version
 
               # Base packages that should be available everywhere
@@ -110,6 +110,7 @@
                 unstablePkgs.nixd
                 unstablePkgs.neovim
                 tree-sitter
+                unstablePkgs.codegraph
 
                 # ─── Compilers and system utilities ───
                 gcc
@@ -156,6 +157,8 @@
         
         # Default to Apple Silicon
         "gentleman" = mkHomeConfiguration "aarch64-darwin";
+
+        "gentleman-linux" = mkHomeConfiguration "x86_64-linux";
       };
     };
 }
