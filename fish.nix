@@ -237,6 +237,9 @@
       end
 
       clear
+
+      set -gx CGO_ENABLED 1
+      set -gx CGO_CFLAGS_ALLOW "-fno-strict-overflow"
     '';
 
     plugins = [
