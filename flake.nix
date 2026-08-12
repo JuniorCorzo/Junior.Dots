@@ -9,9 +9,10 @@
       inputs.nixpkgs.follows = "nixpkgs";  # Follow nixpkgs input
     };
     flake-utils.url = "github:numtide/flake-utils";  # Flake utilities
+    spicetify.url = "git+https://github.com/Gerg-L/spicetify-nix";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, flake-utils, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, flake-utils, spicetify, ... }:
     let
       # Support macOS systems only
       supportedSystems = [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" ];
@@ -41,12 +42,14 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           
-          # Pass extraSpecialArgs to make unstablePkgs available in modules
+          # Pass extraSpecialArgs to make unstablePkgs and spicetify available in modules
           extraSpecialArgs = {
-            inherit unstablePkgs;
+            inherit unstablePkgs spicetify;
           };
           
           modules = [
+            spicetify.homeManagerModules.default
+            ./spicetify.nix
             ./nushell.nix  # Nushell configuration
             ./ghostty.nix  # Ghostty configuration
             ./alacritty.nix  # Alacritty configuration
@@ -96,6 +99,7 @@
                 volta
                 carapace
                 zoxide
+                direnv
                 atuin
                 jq
                 bash
@@ -106,6 +110,10 @@
                 bun
                 cargo
                 go
+                gopls
+                pkg-config
+                mpv
+                (lib.getDev mpv)
                 nil
                 unstablePkgs.nixd
                 unstablePkgs.neovim

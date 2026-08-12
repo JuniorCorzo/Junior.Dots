@@ -47,12 +47,20 @@
       # Priority: Pi wrapper > pnpm globals > local bins > nix > cargo > volta > bun > homebrew > system
       set -gx PATH $HOME/.pi/agent/bin $PNPM_HOME/bin $HOME/.local/bin $HOME/.opencode/bin $HOME/.local/state/nix/profiles/home-manager/home-path/bin $HOME/.nix-profile/bin /nix/var/nix/profiles/default/bin $HOME/.cargo/bin $HOME/.volta/bin $HOME/.bun/bin $PATH
 
+      set -gx PKG_CONFIG_PATH $HOME/.nix-profile/lib/pkgconfig $HOME/.local/state/nix/profiles/home-manager/home-path/lib/pkgconfig /usr/lib/pkgconfig /usr/share/pkgconfig $PKG_CONFIG_PATH
+      set -gx CGO_ENABLED 1
+      set -gx CGO_CFLAGS "-I$HOME/.nix-profile/include -I$HOME/.local/state/nix/profiles/home-manager/home-path/include"
+      set -gx CGO_LDFLAGS "-L$HOME/.nix-profile/lib -L$HOME/.local/state/nix/profiles/home-manager/home-path/lib"
+
       set -gx GPG_TTY (tty)
 
       starship init fish | source
       zoxide init fish | source
       atuin init fish | source
       fzf --fish | source
+      if type -q direnv
+          direnv hook fish | source
+      end
 
       set -Ux CARAPACE_BRIDGES 'zsh,fish,bash,inshellisense'
 
