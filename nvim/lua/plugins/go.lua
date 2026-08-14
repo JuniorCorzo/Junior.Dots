@@ -6,6 +6,16 @@ local pkg_config_path = nix_profile .. "/lib/pkgconfig:" .. hm_profile .. "/lib/
 local cflags = "-I" .. nix_profile .. "/include -I" .. hm_profile .. "/include"
 local ldflags = "-L" .. nix_profile .. "/lib -L" .. hm_profile .. "/lib"
 
+-- Habilitar inlay hints automáticamente al abrir archivos Go
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "go", "gomod" },
+  callback = function(args)
+    if vim.lsp.inlay_hint then
+      vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+    end
+  end,
+})
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -30,6 +40,15 @@ return {
                 cgo = true,
                 unusedparams = true,
                 shadow = true,
+              },
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
               },
               staticcheck = true,
               gofumpt = true,
