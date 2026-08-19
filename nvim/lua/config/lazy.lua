@@ -54,12 +54,11 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.dap.core" },
 
     -- Formatting plugins
-
-    { import = "lazyvim.plugins.extras.lang.typescript.biome" },
-    { import = "lazyvim.plugins.extras.formatting.prettier" },
+    -- { import = "lazyvim.plugins.extras.lang.typescript.biome" },
+    -- { import = "lazyvim.plugins.extras.formatting.prettier" },
 
     -- Linting plugins
-    { import = "lazyvim.plugins.extras.linting.eslint" },
+    -- { import = "lazyvim.plugins.extras.linting.eslint" },
 
     -- Language support plugins
     { import = "lazyvim.plugins.extras.lang.json" },
