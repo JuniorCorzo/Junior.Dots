@@ -11,14 +11,19 @@ hl.exec_cmd("pkill -9 waybar 2>/dev/null; sleep 0.1; waybar &")
 hl.exec_cmd("pgrep -x swaync >/dev/null || swaync &")
 hl.exec_cmd("pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &")
 
+-- Load Matugen dynamic colors if available
+local ok, colors = pcall(dofile, os.getenv("HOME") .. "/.config/hypr/colors.lua")
+local active_border = (ok and colors and colors.primary) or "rgba(7c4dffff)"
+local inactive_border = (ok and colors and colors.surface_container) or "rgba(222222aa)"
+
 -- Layout & Decoration
 hl.config({
     general = {
         gaps_in = 4,
         gaps_out = 8,
         border_size = 2,
-        ["col.active_border"] = "rgba(7c4dffff)",
-        ["col.inactive_border"] = "rgba(222222aa)",
+        ["col.active_border"] = active_border,
+        ["col.inactive_border"] = inactive_border,
         layout = "dwindle",
         resize_on_border = true
     },

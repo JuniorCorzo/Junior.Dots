@@ -75,6 +75,7 @@
             ./hyprland.nix  # Hyprland Wayland compositor configuration (Linux)
             ./matugen.nix  # Matugen Material You theming engine (Linux)
             ./waybar.nix  # Waybar status bar configuration (Linux)
+            ./rofi.nix  # Rofi app launcher with Material You theming (Linux)
             ./raycast.nix  # Raycast scripts
             {
               # Personal data
