@@ -42,7 +42,9 @@
         "hyprland/window" = {
           max-length = 50;
           separate-outputs = true;
+          format = "{}";
           rewrite = {
+            "^$" = "󰣛 Desktop";
             "(.*) — Mozilla Firefox" = "󰈹 $1";
             "(.*) - Google Chrome" = " $1";
             "(.*) - Visual Studio Code" = "󰨞 $1";
