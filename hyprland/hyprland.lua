@@ -4,13 +4,11 @@
 hl.exec_cmd("hyprctl keyword monitor ,preferred,auto,1")
 
 -- Autostart
-hl.on("hyprland.start", function()
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
-    hl.exec_cmd("waybar")
-    hl.exec_cmd("swaync")
-    hl.exec_cmd("wl-paste --watch cliphist store")
-end)
+hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
+hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
+hl.exec_cmd("waybar")
+hl.exec_cmd("swaync")
+hl.exec_cmd("wl-paste --watch cliphist store")
 
 -- Layout & Decoration
 hl.config({
@@ -71,6 +69,8 @@ hl.bind(mainMod .. " + SHIFT + RETURN", hl.dsp.exec_cmd("kitty"), { description 
 hl.bind(mainMod .. " + Q", hl.dsp.window.close(), { description = "Close active window" })
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("nautilus"), { description = "File manager" })
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("rofi -show drun || wofi --show drun"), { description = "Launcher" })
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wallselect"), { description = "Wallpaper selector" })
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("killall waybar || waybar"), { description = "Toggle Waybar" })
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }), { description = "Fullscreen" })
 hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }), { description = "Float window" })
 

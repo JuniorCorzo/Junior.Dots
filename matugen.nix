@@ -31,11 +31,20 @@ let
 
     echo "✨ Theme updated successfully!"
   '';
+
+  wallselect = pkgs.writeShellScriptBin "wallselect" ''
+    #!/usr/bin/env bash
+    IMG=$(zenity --file-selection --title="Seleccionar Fondo de Pantalla" --file-filter="Imágenes | *.jpg *.png *.jpeg *.webp *.avif" 2>/dev/null || true)
+    if [ -n "$IMG" ] && [ -f "$IMG" ]; then
+      wallchange "$IMG"
+    fi
+  '';
 in
 {
   home.packages = [
     pkgs.matugen
     wallchange
+    wallselect
   ];
 
   home.file = {
