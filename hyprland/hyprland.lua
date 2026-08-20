@@ -3,11 +3,11 @@
 -- Monitor
 hl.exec_cmd("hyprctl keyword monitor ,preferred,auto,1")
 
--- Autostart (guarded against duplicate instances on reload)
+-- Autostart (clean single-instance lifecycle)
 hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
 hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
-hl.exec_cmd("if [ -f ~/.config/hypr/current_wallpaper ]; then swaybg -i \"$(cat ~/.config/hypr/current_wallpaper)\" -m fill & fi")
-hl.exec_cmd("pgrep -x waybar >/dev/null || waybar &")
+hl.exec_cmd("if [ -f ~/.config/hypr/current_wallpaper ]; then pkill -9 swaybg 2>/dev/null; swaybg -i \"$(cat ~/.config/hypr/current_wallpaper)\" -m fill & fi")
+hl.exec_cmd("pkill -9 waybar 2>/dev/null; sleep 0.1; waybar &")
 hl.exec_cmd("pgrep -x swaync >/dev/null || swaync &")
 hl.exec_cmd("pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &")
 
