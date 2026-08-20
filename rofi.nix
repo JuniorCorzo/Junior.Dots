@@ -5,6 +5,7 @@
     enable = pkgs.stdenv.isLinux;
     package = pkgs.rofi;
     font = "JetBrainsMono Nerd Font 12";
+    theme = "${./rofi/theme.rasi}";
     extraConfig = {
       modi = "drun,run,filebrowser,window";
       show-icons = true;
@@ -16,95 +17,4 @@
       hover-select = true;
     };
   };
-
-  xdg.configFile."rofi/config.rasi".text = ''
-    @import "colors.rasi"
-
-    configuration {
-      modi: "drun,run,filebrowser,window";
-      show-icons: true;
-      display-drun: " Apps";
-      display-run: " Run";
-      display-filebrowser: " Files";
-      display-window: " Windows";
-      drun-display-format: "{name}";
-      font: "JetBrainsMono Nerd Font 12";
-    }
-
-    * {
-      font: "JetBrainsMono Nerd Font 12";
-    }
-
-    window {
-      width: 700px;
-      border-radius: 16px;
-      background-color: @background;
-      border: 2px solid @border-col;
-      padding: 20px;
-    }
-
-    mainbox {
-      background-color: transparent;
-      spacing: 15px;
-      children: [ inputbar, listview ];
-    }
-
-    inputbar {
-      background-color: @background-alt;
-      border-radius: 12px;
-      padding: 10px 16px;
-      children: [ prompt, entry ];
-      spacing: 12px;
-    }
-
-    prompt {
-      text-color: @selected;
-      background-color: transparent;
-      font-weight: bold;
-    }
-
-    entry {
-      placeholder: "Buscar...";
-      placeholder-color: @border-col;
-      text-color: @foreground;
-      background-color: transparent;
-    }
-
-    listview {
-      background-color: transparent;
-      columns: 2;
-      lines: 7;
-      spacing: 8px;
-      cycle: true;
-      dynamic: true;
-      scrollbar: false;
-    }
-
-    element {
-      background-color: transparent;
-      text-color: @foreground;
-      border-radius: 10px;
-      padding: 10px 14px;
-      spacing: 12px;
-      cursor: pointer;
-    }
-
-    element selected {
-      background-color: @selected;
-      text-color: @on-selected;
-    }
-
-    element-icon {
-      size: 28px;
-      background-color: transparent;
-      cursor: inherit;
-    }
-
-    element-text {
-      vertical-align: 0.5;
-      text-color: inherit;
-      background-color: transparent;
-      cursor: inherit;
-    }
-  '';
 }
