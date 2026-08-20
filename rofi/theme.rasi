@@ -15,14 +15,14 @@ window {
 mainbox {
   background-color: transparent;
   spacing: 15px;
-  children: [ inputbar, listview ];
+  children: [ "inputbar", "listview" ];
 }
 
 inputbar {
   background-color: @background-alt;
   border-radius: 12px;
   padding: 10px 16px;
-  children: [ prompt, entry ];
+  children: [ "prompt", "entry" ];
   spacing: 12px;
 }
 
