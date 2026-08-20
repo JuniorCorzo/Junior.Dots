@@ -160,4 +160,8 @@
       hyprland.default = [ "hyprland" "gtk" ];
     };
   };
+
+  home.file = {
+    ".config/hypr/hyprland.lua".source = ./hyprland/hyprland.lua;
+  };
 }
