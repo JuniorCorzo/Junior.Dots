@@ -41,6 +41,7 @@ in
   home.file = {
     ".config/matugen/config.toml".source = ./matugen/config.toml;
     ".config/matugen/templates/hyprland-colors.conf".source = ./matugen/templates/hyprland-colors.conf;
+    ".config/matugen/templates/waybar-colors.css".source = ./matugen/templates/waybar-colors.css;
     ".config/matugen/templates/alacritty-colors.toml".source = ./matugen/templates/alacritty-colors.toml;
     ".config/matugen/templates/kitty-colors.conf".source = ./matugen/templates/kitty-colors.conf;
   };

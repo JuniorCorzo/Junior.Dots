@@ -74,6 +74,7 @@
             ./sketchybar.nix  # SketchyBar status bar (macOS)
             ./hyprland.nix  # Hyprland Wayland compositor configuration (Linux)
             ./matugen.nix  # Matugen Material You theming engine (Linux)
+            ./waybar.nix  # Waybar status bar configuration (Linux)
             ./raycast.nix  # Raycast scripts
             {
               # Personal data
