@@ -77,14 +77,12 @@
       };
 
       dwindle = {
-        pseudotile = true;
         preserve_split = true;
       };
 
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
-        vfr = true;
       };
 
       "$mod" = "SUPER";
@@ -101,7 +99,7 @@
         "$mod, Q, killactive,"
         "$mod, F, fullscreen, 0"
         "$mod, T, togglefloating,"
-        "$mod, J, togglesplit,"
+        "$mod, J, layoutmsg, togglesplit"
 
         # Navigation / Focus
         "$mod, left, movefocus, l"
