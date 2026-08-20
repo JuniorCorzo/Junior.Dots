@@ -154,4 +154,12 @@
       ];
     };
   };
+
+  xdg.portal = {
+    enable = pkgs.stdenv.isLinux;
+    config = {
+      common.default = "*";
+      hyprland.default = [ "hyprland" "gtk" ];
+    };
+  };
 }
