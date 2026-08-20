@@ -161,6 +161,28 @@
     };
   };
 
+  home.packages = let
+    hyprAutostart = pkgs.writeShellScriptBin "hypr-autostart" ''
+      #!/usr/bin/env bash
+      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH
+      systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH
+
+      if [ -f "$HOME/.config/hypr/current_wallpaper" ]; then
+        pkill -9 swaybg 2>/dev/null || true
+        swaybg -i "$(cat "$HOME/.config/hypr/current_wallpaper")" -m fill &
+      fi
+
+      pkill -9 waybar 2>/dev/null || true
+      sleep 0.1
+      waybar &
+
+      pgrep -x swaync >/dev/null || swaync &
+      pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &
+    '';
+  in [
+    hyprAutostart
+  ];
+
   home.file = {
     ".config/hypr/hyprland.lua".source = ./hyprland/hyprland.lua;
   };

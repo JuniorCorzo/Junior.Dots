@@ -3,13 +3,8 @@
 -- Monitor
 hl.exec_cmd("hyprctl keyword monitor ,preferred,auto,1")
 
--- Autostart (clean single-instance lifecycle)
-hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
-hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
-hl.exec_cmd("if [ -f ~/.config/hypr/current_wallpaper ]; then pkill -9 swaybg 2>/dev/null; swaybg -i \"$(cat ~/.config/hypr/current_wallpaper)\" -m fill & fi")
-hl.exec_cmd("pkill -9 waybar 2>/dev/null; sleep 0.1; waybar &")
-hl.exec_cmd("pgrep -x swaync >/dev/null || swaync &")
-hl.exec_cmd("pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &")
+-- Autostart
+hl.exec_cmd("hypr-autostart")
 
 -- Load Matugen dynamic colors if available
 local ok, colors = pcall(dofile, os.getenv("HOME") .. "/.config/hypr/colors.lua")
@@ -74,9 +69,9 @@ hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd("alacritty"), { description = "T
 hl.bind(mainMod .. " + SHIFT + RETURN", hl.dsp.exec_cmd("kitty"), { description = "Kitty Terminal" })
 hl.bind(mainMod .. " + Q", hl.dsp.window.close(), { description = "Close active window" })
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("nautilus"), { description = "File manager" })
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("rofi -show drun || wofi --show drun"), { description = "Launcher" })
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("rofi -show drun"), { description = "Launcher" })
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wallselect"), { description = "Wallpaper selector" })
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("killall waybar || waybar"), { description = "Toggle Waybar" })
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("hypr-autostart"), { description = "Restart Status Bar" })
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }), { description = "Fullscreen" })
 hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }), { description = "Float window" })
 
