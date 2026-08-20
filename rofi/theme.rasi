@@ -8,7 +8,8 @@ window {
   width: 700px;
   border-radius: 16px;
   background-color: @background;
-  border: 2px solid @border-col;
+  border: 2px;
+  border-color: @border-col;
   padding: 20px;
 }
 
