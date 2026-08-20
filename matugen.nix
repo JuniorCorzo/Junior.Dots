@@ -34,9 +34,43 @@ let
 
   wallselect = pkgs.writeShellScriptBin "wallselect" ''
     #!/usr/bin/env bash
-    IMG=$(zenity --file-selection --title="Seleccionar Fondo de Pantalla" --file-filter="Imágenes | *.jpg *.png *.jpeg *.webp *.avif" 2>/dev/null || true)
-    if [ -n "$IMG" ] && [ -f "$IMG" ]; then
-      wallchange "$IMG"
+    set -euo pipefail
+
+    WALL_DIRS=(
+      "$HOME/wallpapers"
+      "$HOME/Imágenes/wallpapers"
+      "$HOME/Pictures/wallpapers"
+    )
+
+    IMAGES=()
+    for dir in "''${WALL_DIRS[@]}"; do
+      if [ -d "$dir" ]; then
+        while IFS= read -r -d $'\0' file; do
+          IMAGES+=("$file")
+        done < <(find "$dir" -maxdepth 2 -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" -o -name "*.webp" \) -print0 2>/dev/null)
+      fi
+    done
+
+    if [ ''${#IMAGES[@]} -eq 0 ]; then
+      notify-send "Wallpapers" "No se encontraron fondos en ~/wallpapers" 2>/dev/null || true
+      exit 0
+    fi
+
+    ROFI_INPUT=""
+    for img in "''${IMAGES[@]}"; do
+      filename=$(basename "$img")
+      ROFI_INPUT+="''${filename}\0icon\x1f''${img}\n"
+    done
+
+    SELECTED=$(echo -en "$ROFI_INPUT" | rofi -dmenu -i -p "󰸉 Fondo" -show-icons 2>/dev/null || true)
+
+    if [ -n "$SELECTED" ]; then
+      for img in "''${IMAGES[@]}"; do
+        if [ "$(basename "$img")" = "$SELECTED" ]; then
+          wallchange "$img"
+          break
+        fi
+      done
     fi
   '';
 in

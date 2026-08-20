@@ -3,12 +3,12 @@
 -- Monitor
 hl.exec_cmd("hyprctl keyword monitor ,preferred,auto,1")
 
--- Autostart
+-- Autostart (guarded against duplicate instances on reload)
 hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
 hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH")
-hl.exec_cmd("waybar")
-hl.exec_cmd("swaync")
-hl.exec_cmd("wl-paste --watch cliphist store")
+hl.exec_cmd("pgrep -x waybar >/dev/null || waybar &")
+hl.exec_cmd("pgrep -x swaync >/dev/null || swaync &")
+hl.exec_cmd("pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &")
 
 -- Layout & Decoration
 hl.config({
