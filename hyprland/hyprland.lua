@@ -95,3 +95,16 @@ end
 -- Mouse
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "Move window" })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "Resize window" })
+
+-- Media & Hardware Keys (Volume, Brightness, Playback)
+hl.bind(", XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"), { repeat = true, locked = true, description = "Volume Up" })
+hl.bind(", XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { repeat = true, locked = true, description = "Volume Down" })
+hl.bind(", XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, description = "Mute Volume" })
+hl.bind(", XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, description = "Mute Mic" })
+
+hl.bind(", XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl set +5%"), { repeat = true, locked = true, description = "Brightness Up" })
+hl.bind(", XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { repeat = true, locked = true, description = "Brightness Down" })
+
+hl.bind(", XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Play/Pause" })
+hl.bind(", XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Next Track" })
+hl.bind(", XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true, description = "Previous Track" })
