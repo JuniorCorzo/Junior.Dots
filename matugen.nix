@@ -17,19 +17,18 @@ let
       exit 1
     fi
 
-    # 1. Generate colors with Matugen
+    # 1. Generate colors with Matugen non-interactively
     echo "🎨 Generating Material You palette with Matugen..."
-    matugen image "$WALLPAPER"
+    matugen image --source-color-index 0 "$WALLPAPER"
 
-    # 2. Update wallpaper with hyprpaper or swww if available
-    if command -v swww &>/dev/null; then
-      swww img "$WALLPAPER" --transition-type grow --transition-pos 0.5,0.5 --transition-fps 60
-    elif command -v hyprctl &>/dev/null; then
-      hyprctl hyprpaper preload "$WALLPAPER" 2>/dev/null || true
-      hyprctl hyprpaper wallpaper ",$WALLPAPER" 2>/dev/null || true
-    fi
+    # 2. Update wallpaper with swaybg
+    mkdir -p "$HOME/.config/hypr"
+    echo "$WALLPAPER" > "$HOME/.config/hypr/current_wallpaper"
 
-    echo "✨ Theme updated successfully!"
+    pkill -x swaybg 2>/dev/null || true
+    swaybg -i "$WALLPAPER" -m fill &
+
+    echo "✨ Theme and wallpaper updated successfully!"
   '';
 
   wallselect = pkgs.writeShellScriptBin "wallselect" ''
@@ -77,6 +76,7 @@ in
 {
   home.packages = [
     pkgs.matugen
+    pkgs.swaybg
     wallchange
     wallselect
   ];
