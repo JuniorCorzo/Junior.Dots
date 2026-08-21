@@ -24,6 +24,16 @@
         "wl-paste --watch cliphist store"
       ];
 
+      # Keyboard input configuration (US AltGr International)
+      input = {
+        kb_layout = "us";
+        kb_variant = "altgr-intl";
+        follow_mouse = 1;
+        touchpad = {
+          natural_scroll = true;
+        };
+      };
+
       # General layout and borders
       general = {
         gaps_in = 4;

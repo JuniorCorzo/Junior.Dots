@@ -13,6 +13,14 @@ local inactive_border = (ok and colors and colors.surface_container) or "rgba(22
 
 -- Layout & Decoration
 hl.config({
+    input = {
+        kb_layout = "us",
+        kb_variant = "altgr-intl",
+        follow_mouse = 1,
+        touchpad = {
+            natural_scroll = true
+        }
+    },
     general = {
         gaps_in = 4,
         gaps_out = 8,
