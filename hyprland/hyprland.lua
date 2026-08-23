@@ -116,3 +116,10 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { ["r
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "Play/Pause" })
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "Next Track" })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true, description = "Previous Track" })
+
+-- Screenshots
+hl.bind("Print", hl.dsp.exec_cmd("hypr-screenshot area"), { description = "Screenshot area" })
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd("hypr-screenshot full"), { description = "Screenshot full screen" })
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("hypr-screenshot area"), { description = "Screenshot area" })
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("hypr-screenshot window"), { description = "Screenshot active window" })
+hl.bind(mainMod .. " + ALT + S", hl.dsp.exec_cmd("hypr-screenshot window"), { description = "Screenshot active window" })

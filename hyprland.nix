@@ -153,6 +153,13 @@
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
+
+        # Screenshot keybindings
+        ", Print, exec, hypr-screenshot area"
+        "SHIFT, Print, exec, hypr-screenshot full"
+        "$mod SHIFT, S, exec, hypr-screenshot area"
+        "$mod, Print, exec, hypr-screenshot window"
+        "$mod ALT, S, exec, hypr-screenshot window"
       ];
 
       # Mouse bindings
@@ -206,8 +213,52 @@
       pgrep -x swaync >/dev/null || swaync &
       pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &
     '';
+
+    hyprScreenshot = pkgs.writeShellScriptBin "hypr-screenshot" ''
+      #!/usr/bin/env bash
+      DIR="$HOME/Pictures/Screenshots"
+      [ -d "$HOME/Imágenes" ] && DIR="$HOME/Imágenes/Screenshots"
+      mkdir -p "$DIR"
+
+      FILENAME="$DIR/screenshot_$(date +'%Y%m%d_%H%M%S').png"
+      MODE="''${1:-area}"
+
+      case "$MODE" in
+        area)
+          GEOM=$(${pkgs.slurp}/bin/slurp 2>/dev/null)
+          [ -z "$GEOM" ] && exit 0
+          ${pkgs.grim}/bin/grim -g "$GEOM" "$FILENAME"
+          ;;
+        full)
+          ${pkgs.grim}/bin/grim "$FILENAME"
+          ;;
+        window)
+          ACTIVE_WINDOW=$(hyprctl activewindow -j 2>/dev/null)
+          AT=$(echo "$ACTIVE_WINDOW" | ${pkgs.jq}/bin/jq -r '.at | "\(.[0]),\(.[1])"' 2>/dev/null)
+          SIZE=$(echo "$ACTIVE_WINDOW" | ${pkgs.jq}/bin/jq -r '.size | "\(.[0])x\(.[1])"' 2>/dev/null)
+          if [ -n "$AT" ] && [ -n "$SIZE" ] && [ "$AT" != "null" ]; then
+            ${pkgs.grim}/bin/grim -g "''${AT} ''${SIZE}" "$FILENAME"
+          else
+            ${pkgs.grim}/bin/grim "$FILENAME"
+          fi
+          ;;
+        *)
+          ${pkgs.grim}/bin/grim "$FILENAME"
+          ;;
+      esac
+
+      if [ -f "$FILENAME" ]; then
+        ${pkgs.wl-clipboard}/bin/wl-copy < "$FILENAME"
+        notify-send -a "Screenshot" "Captura guardada" "Copiada al portapapeles y guardada en:\n$FILENAME" -i "$FILENAME" 2>/dev/null || true
+      fi
+    '';
   in [
     hyprAutostart
+    hyprScreenshot
+    pkgs.grim
+    pkgs.slurp
+    pkgs.wl-clipboard
+    pkgs.jq
     pkgs.brightnessctl
     pkgs.playerctl
   ];
