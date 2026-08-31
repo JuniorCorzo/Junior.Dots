@@ -63,6 +63,10 @@ let
     substituteInPlace $out/modules/common/panels/lock/LockContext.qml \
       --replace-fail "id: pam" "id: pam
         config: \"login\""
+
+    # 4. Use hyprlock by default
+    substituteInPlace $out/modules/common/Config.qml \
+      --replace-fail "property bool useHyprlock: false" "property bool useHyprlock: true"
   '';
 
   wrappedQuickshell = pkgs.symlinkJoin {
@@ -141,6 +145,18 @@ lib.mkIf pkgs.stdenv.isLinux {
     '';
     ".config/hypr/custom/execs.lua".text = ''
       -- Custom execs
+    '';
+    ".config/hypr/custom/general.lua".text = ''
+      hl.config({
+          input = {
+              kb_layout = "us",
+              kb_variant = "altgr-intl",
+              follow_mouse = 1,
+              touchpad = {
+                  natural_scroll = true,
+              },
+          },
+      })
     '';
     ".config/quickshell/ii".source = patchedEnd4pC;
     ".config/quickshell/end4-pC".source = patchedEnd4pC;
