@@ -14,7 +14,7 @@
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, flake-utils, spicetify, ... }:
     let
-      # Support macOS systems only
+      # Support macOS and Linux systems
       supportedSystems = [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" ];
       
       # ─── User Configuration ───
@@ -76,11 +76,12 @@
             ./matugen.nix  # Matugen Material You theming engine (Linux)
             ./waybar.nix  # Waybar status bar configuration (Linux)
             ./rofi.nix  # Rofi app launcher with Material You theming (Linux)
+            ./quickshell.nix  # Quickshell desktop shell configuration (Linux)
             ./raycast.nix  # Raycast scripts
             {
               # Personal data
               home.username = username;
-              home.homeDirectory = "/home/${username}";  # macOS home directory
+              home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
               home.stateVersion = "24.11";  # State version
 
               # Base packages that should be available everywhere
