@@ -58,6 +58,11 @@ let
             source = sourcePath;
         }
     }"
+
+    # 3. Configure PamContext to use 'login' PAM service for password authentication
+    substituteInPlace $out/modules/common/panels/lock/LockContext.qml \
+      --replace-fail "id: pam" "id: pam
+        config: \"login\""
   '';
 
   wrappedQuickshell = pkgs.symlinkJoin {
@@ -135,9 +140,7 @@ lib.mkIf pkgs.stdenv.isLinux {
       hl.env("qsConfig", "end4-pC")
     '';
     ".config/hypr/custom/execs.lua".text = ''
-      hl.on("hyprland.start", function ()
-          hl.exec_cmd("hypr-quickshell-start")
-      end)
+      -- Custom execs
     '';
     ".config/quickshell/ii".source = patchedEnd4pC;
     ".config/quickshell/end4-pC".source = patchedEnd4pC;
