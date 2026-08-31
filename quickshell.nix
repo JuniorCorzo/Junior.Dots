@@ -133,7 +133,111 @@ lib.mkIf pkgs.stdenv.isLinux {
     ".config/hypr/hyprland.lua".source = "${illogicalImpulse}/dots/.config/hypr/hyprland.lua";
     ".config/hypr/hyprland".source = "${illogicalImpulse}/dots/.config/hypr/hyprland";
     ".config/hypr/hypridle.conf".source = "${illogicalImpulse}/dots/.config/hypr/hypridle.conf";
-    ".config/hypr/hyprlock.conf".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock.conf";
+    ".config/hypr/hyprlock.conf".text = ''
+      # Material You Glassmorphism Hyprlock
+      background {
+          monitor =
+          path = screenshot
+          blur_passes = 3
+          blur_size = 7
+          noise = 0.0117
+          contrast = 0.8916
+          brightness = 0.8172
+          vibrancy = 0.1696
+          vibrancy_darkness = 0.0
+      }
+
+      # Input field with Material You pill design
+      input-field {
+          monitor =
+          size = 280, 56
+          outline_thickness = 2
+          dots_size = 0.25
+          dots_spacing = 0.3
+          dots_center = true
+          dots_rounding = -1
+          outer_color = rgba(255, 255, 255, 0.25)
+          inner_color = rgba(20, 20, 25, 0.65)
+          font_color = rgba(255, 255, 255, 0.95)
+          fade_on_empty = false
+          placeholder_text = <span foreground="##ffffff88"><i>  Contraseña...</i></span>
+          hide_input = false
+          rounding = 28
+          check_color = rgba(124, 77, 255, 0.8)
+          fail_color = rgba(239, 83, 80, 0.8)
+          fail_text = <i>$FAIL <b>($ATTEMPTS)</b></i>
+          fail_transition = 300
+          capslock_color = rgba(255, 179, 0, 0.8)
+          numlock_color = -1
+          bothlock_color = -1
+          invert_numlock = false
+          swap_font_color = false
+
+          position = 0, -80
+          halign = center
+          valign = center
+      }
+
+      # Big Material Clock
+      label {
+          monitor =
+          text = $TIME
+          color = rgba(255, 255, 255, 0.95)
+          font_size = 90
+          font_family = Google Sans Flex, Space Grotesk, sans-serif
+          shadow_passes = 3
+          shadow_size = 4
+          shadow_color = rgba(0, 0, 0, 0.4)
+
+          position = 0, 180
+          halign = center
+          valign = center
+      }
+
+      # Date Label
+      label {
+          monitor =
+          text = cmd[update:43200000] date +"%A, %d de %B"
+          color = rgba(255, 255, 255, 0.85)
+          font_size = 20
+          font_family = Google Sans Flex, Space Grotesk, sans-serif
+          shadow_passes = 2
+          shadow_size = 3
+          shadow_color = rgba(0, 0, 0, 0.3)
+
+          position = 0, 100
+          halign = center
+          valign = center
+      }
+
+      # User greeting
+      label {
+          monitor =
+          text = Hola, $USER
+          color = rgba(255, 255, 255, 0.9)
+          font_size = 18
+          font_family = Google Sans Flex, Space Grotesk, sans-serif
+          shadow_passes = 2
+          shadow_size = 2
+
+          position = 0, 0
+          halign = center
+          valign = center
+      }
+
+      # Keyboard Layout indicator
+      label {
+          monitor =
+          text =   $LAYOUT
+          color = rgba(255, 255, 255, 0.6)
+          font_size = 13
+          font_family = JetBrains Mono NF, monospace
+
+          position = 30, 30
+          halign = left
+          valign = bottom
+      }
+    '';
     ".config/hypr/hyprlock".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock";
     ".config/hypr/custom/env.lua".text = ''
       local home_dir = os.getenv("HOME")
