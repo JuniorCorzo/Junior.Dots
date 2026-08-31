@@ -19,6 +19,47 @@ let
     sha256 = "16kqyqywcp1mkqgsm9fql0a73f7kihgkw4fzpf9n8rx6rhbpdghv";
   };
 
+  patchedEnd4pC = pkgs.runCommand "end4-pC-patched" {} ''
+    cp -r ${end4pC} $out
+    chmod -R u+w $out
+
+    # 1. Create missing DirectoryIcon.qml to fix purple/black missing textures on folders
+    cat << 'EOF' > $out/modules/common/widgets/DirectoryIcon.qml
+    import QtQuick
+    import QtQuick.Layouts
+    import qs.modules.common
+    import qs.modules.common.widgets
+
+    Item {
+        id: root
+        required property var fileModelData
+        property size sourceSize: Qt.size(64, 64)
+
+        Rectangle {
+            anchors.fill: parent
+            radius: Appearance.rounding.small
+            color: Appearance.colors.colSecondaryContainer
+
+            MaterialSymbol {
+                anchors.centerIn: parent
+                icon: "folder"
+                pixelSize: Math.min(parent.width, parent.height) * 0.5
+                color: Appearance.colors.colOnSecondaryContainer
+            }
+        }
+    }
+    EOF
+
+    # 2. Add fallback in ThumbnailImage.qml so transparent images render sourcePath directly
+    substituteInPlace $out/modules/common/widgets/ThumbnailImage.qml \
+      --replace-fail "source: thumbnailPath" "source: thumbnailPath
+    onStatusChanged: {
+        if (status === Image.Error && source !== sourcePath) {
+            source = sourcePath;
+        }
+    }"
+  '';
+
   wrappedQuickshell = pkgs.symlinkJoin {
     name = "quickshell-wrapped";
     paths = [ pkgs.quickshell ];
@@ -91,8 +132,8 @@ lib.mkIf pkgs.stdenv.isLinux {
     ".config/hypr/custom/execs.lua".text = ''
       -- Custom execs
     '';
-    ".config/quickshell/ii".source = end4pC;
-    ".config/quickshell/end4-pC".source = end4pC;
-    ".config/quickshell/illogical-impulse".source = end4pC;
+    ".config/quickshell/ii".source = patchedEnd4pC;
+    ".config/quickshell/end4-pC".source = patchedEnd4pC;
+    ".config/quickshell/illogical-impulse".source = patchedEnd4pC;
   };
 }
