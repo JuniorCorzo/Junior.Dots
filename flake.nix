@@ -25,7 +25,7 @@
       mkHomeConfiguration = system:
         let
           pkgs = import nixpkgs {
-            localSystem = system;
+            localSystem = { inherit system; };
             config.allowUnfree = true;
           };
           nodeWithoutNpm = pkgs.runCommand "nodejs-without-npm-${pkgs.nodejs.version}" { } ''
@@ -35,7 +35,7 @@
           '';
           
           unstablePkgs = import nixpkgs-unstable {
-            localSystem = system;
+            localSystem = { inherit system; };
             config.allowUnfree = true;
           };
         in

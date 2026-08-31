@@ -5,6 +5,7 @@
     enable = pkgs.stdenv.isLinux;
     package = null;
     systemd.enable = false;
+    configType = "lua";
     plugins = [];
     settings = {};
     extraConfig = "";
