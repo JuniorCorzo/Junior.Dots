@@ -126,14 +126,22 @@ lib.mkIf pkgs.stdenv.isLinux {
     ".config/hypr/hypridle.conf".source = "${illogicalImpulse}/dots/.config/hypr/hypridle.conf";
     ".config/hypr/hyprlock.conf".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock.conf";
     ".config/hypr/hyprlock".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock";
+    ".config/hypr/custom/env.lua".text = ''
+      local home_dir = os.getenv("HOME")
+      hl.env("PATH", home_dir .. "/.local/state/nix/profiles/home-manager/home-path/bin:" .. home_dir .. "/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin:" .. (os.getenv("PATH") or ""))
+      hl.env("qsConfig", "end4-pC")
+    '';
     ".config/hypr/custom/variables.lua".text = ''
       hl.env("qsConfig", "end4-pC")
     '';
     ".config/hypr/custom/execs.lua".text = ''
-      -- Custom execs
+      hl.on("hyprland.start", function ()
+          hl.exec_cmd("hypr-quickshell-start")
+      end)
     '';
     ".config/quickshell/ii".source = patchedEnd4pC;
     ".config/quickshell/end4-pC".source = patchedEnd4pC;
     ".config/quickshell/illogical-impulse".source = patchedEnd4pC;
+    ".local/bin/qs".source = "${wrappedQuickshell}/bin/qs";
   };
 }
