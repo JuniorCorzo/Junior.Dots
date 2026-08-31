@@ -20,7 +20,8 @@ let
       sleep 0.1
     done
 
-    pkill -9 qs 2>/dev/null || true
+    pkill -9 -f quickshell 2>/dev/null || true
+    pkill -9 -f qs 2>/dev/null || true
     sleep 0.2
     exec qs -c end4-pC
   '';

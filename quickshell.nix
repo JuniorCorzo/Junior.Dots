@@ -89,7 +89,7 @@ lib.mkIf pkgs.stdenv.isLinux {
       hl.env("qsConfig", "end4-pC")
     '';
     ".config/hypr/custom/execs.lua".text = ''
-      hl.exec_cmd("hypr-quickshell-start")
+      -- Custom execs
     '';
     ".config/quickshell/ii".source = end4pC;
     ".config/quickshell/end4-pC".source = end4pC;
