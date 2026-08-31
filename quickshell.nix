@@ -42,7 +42,7 @@ let
 
             MaterialSymbol {
                 anchors.centerIn: parent
-                icon: "folder"
+                text: "folder"
                 iconSize: Math.min(parent.width, parent.height) * 0.5
                 color: Appearance.colors.colOnSecondaryContainer
             }
