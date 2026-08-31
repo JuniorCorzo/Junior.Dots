@@ -25,8 +25,9 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/qs \
-        --prefix QML2_IMPORT_PATH : "${pkgs.qt6.qtdeclarative}/lib/qt-6/qml:${pkgs.qt6.qt5compat}/lib/qt-6/qml:${pkgs.qt6.qtsvg}/lib/qt-6/qml:${pkgs.qt6.qtwayland}/lib/qt-6/qml:${pkgs.qt6.qtmultimedia}/lib/qt-6/qml:/usr/lib64/qt6/qml:/usr/lib/qt6/qml" \
-        --prefix QT_PLUGIN_PATH : "${pkgs.qt6.qtbase}/lib/qt-6/plugins:${pkgs.qt6.qtsvg}/lib/qt-6/plugins:/usr/lib64/qt6/plugins"
+        --prefix QML2_IMPORT_PATH : "${pkgs.qt6.qtdeclarative}/lib/qt-6/qml:${pkgs.qt6.qt5compat}/lib/qt-6/qml:${pkgs.qt6.qtsvg}/lib/qt-6/qml:${pkgs.qt6.qtwayland}/lib/qt-6/qml:${pkgs.qt6.qtmultimedia}/lib/qt-6/qml:${pkgs.qt6.qtpositioning}/lib/qt-6/qml:${pkgs.kdePackages.kirigami}/lib/qt-6/qml:${pkgs.kdePackages.syntax-highlighting}/lib/qt-6/qml:/usr/lib64/qt6/qml:/usr/lib/qt6/qml" \
+        --prefix LD_LIBRARY_PATH : "${pkgs.qt6.qtpositioning}/lib:${pkgs.qt6.qt5compat}/lib:${pkgs.qt6.qtdeclarative}/lib:${pkgs.qt6.qtbase}/lib:${pkgs.kdePackages.kirigami}/lib:${pkgs.kdePackages.syntax-highlighting}/lib:/usr/lib64:/usr/lib" \
+        --prefix QT_PLUGIN_PATH : "${pkgs.qt6.qtbase}/lib/qt-6/plugins:${pkgs.qt6.qtsvg}/lib/qt-6/plugins:${pkgs.qt6.qtpositioning}/lib/qt-6/plugins:/usr/lib64/qt6/plugins"
     '';
   };
 in
@@ -40,6 +41,9 @@ lib.mkIf pkgs.stdenv.isLinux {
     qt6.qtwayland
     qt6.qtmultimedia
     qt6.qtimageformats
+    qt6.qtpositioning
+    kdePackages.kirigami
+    kdePackages.syntax-highlighting
     socat
     playerctl
     libnotify
