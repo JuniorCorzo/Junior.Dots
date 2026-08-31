@@ -18,12 +18,28 @@ let
     rev = "main";
     sha256 = "16kqyqywcp1mkqgsm9fql0a73f7kihgkw4fzpf9n8rx6rhbpdghv";
   };
+
+  wrappedQuickshell = pkgs.symlinkJoin {
+    name = "quickshell-wrapped";
+    paths = [ pkgs.quickshell ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/qs \
+        --prefix QML2_IMPORT_PATH : "${pkgs.qt6.qtdeclarative}/lib/qt-6/qml:${pkgs.qt6.qt5compat}/lib/qt-6/qml:${pkgs.qt6.qtsvg}/lib/qt-6/qml:${pkgs.qt6.qtwayland}/lib/qt-6/qml:${pkgs.qt6.qtmultimedia}/lib/qt-6/qml:/usr/lib64/qt6/qml:/usr/lib/qt6/qml" \
+        --prefix QT_PLUGIN_PATH : "${pkgs.qt6.qtbase}/lib/qt-6/plugins:${pkgs.qt6.qtsvg}/lib/qt-6/plugins:/usr/lib64/qt6/plugins"
+    '';
+  };
 in
 lib.mkIf pkgs.stdenv.isLinux {
   home.packages = with pkgs; [
-    quickshell
+    wrappedQuickshell
     qt6.qtbase
     qt6.qtdeclarative
+    qt6.qt5compat
+    qt6.qtsvg
+    qt6.qtwayland
+    qt6.qtmultimedia
+    qt6.qtimageformats
     socat
     playerctl
     libnotify
@@ -31,6 +47,11 @@ lib.mkIf pkgs.stdenv.isLinux {
     wireplumber
     libqalculate
   ];
+
+  home.sessionVariables = {
+    QML2_IMPORT_PATH = "$HOME/.nix-profile/lib/qt-6/qml:$HOME/.local/state/nix/profiles/home-manager/home-path/lib/qt-6/qml:/usr/lib64/qt6/qml:/usr/lib/qt6/qml";
+    QT_PLUGIN_PATH = "$HOME/.nix-profile/lib/qt-6/plugins:$HOME/.local/state/nix/profiles/home-manager/home-path/lib/qt-6/plugins:/usr/lib64/qt6/plugins:/usr/lib/qt6/plugins";
+  };
 
   home.file = {
     ".config/quickshell/end4-pC".source = end4pC;
