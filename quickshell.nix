@@ -57,6 +57,17 @@ lib.mkIf pkgs.stdenv.isLinux {
     tesseract
     fuzzel
     ydotool
+    material-symbols
+    rubik
+    hyprshot
+    swappy
+    upower
+    wtype
+    songrec
+    translate-shell
+    wlogout
+    hypridle
+    hyprsunset
   ];
 
   home.sessionVariables = {
@@ -66,10 +77,13 @@ lib.mkIf pkgs.stdenv.isLinux {
   };
 
   home.file = {
-    ".config/quickshell/end4-pC".source = end4pC;
-    ".config/quickshell/illogical-impulse".source = "${illogicalImpulse}/dots/.config/quickshell";
+    ".config/hypr/hyprland.lua".source = "${illogicalImpulse}/dots/.config/hypr/hyprland.lua";
     ".config/hypr/hyprland".source = "${illogicalImpulse}/dots/.config/hypr/hyprland";
     ".config/hypr/hypridle.conf".source = "${illogicalImpulse}/dots/.config/hypr/hypridle.conf";
     ".config/hypr/hyprlock.conf".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock.conf";
+    ".config/hypr/hyprlock".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock";
+    ".config/hypr/custom".source = "${illogicalImpulse}/dots/.config/hypr/custom";
+    ".config/quickshell/end4-pC".source = end4pC;
+    ".config/quickshell/illogical-impulse".source = "${illogicalImpulse}/dots/.config/quickshell";
   };
 }
