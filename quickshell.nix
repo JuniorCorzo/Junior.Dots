@@ -68,6 +68,7 @@ lib.mkIf pkgs.stdenv.isLinux {
     wlogout
     hypridle
     hyprsunset
+    ddcutil
   ];
 
   home.sessionVariables = {
