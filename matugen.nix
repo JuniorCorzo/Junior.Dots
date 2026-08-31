@@ -55,13 +55,13 @@ let
       exit 0
     fi
 
-    ROFI_INPUT=""
+    CHOICES=""
     for img in "''${IMAGES[@]}"; do
       filename=$(basename "$img")
-      ROFI_INPUT+="''${filename}\0icon\x1f''${img}\n"
+      CHOICES+="''${filename}\n"
     done
 
-    SELECTED=$(echo -en "$ROFI_INPUT" | rofi -dmenu -i -p "󰸉 Fondo" -show-icons 2>/dev/null || true)
+    SELECTED=$(echo -en "$CHOICES" | fuzzel --dmenu -p "󰸉 Fondo: " 2>/dev/null || true)
 
     if [ -n "$SELECTED" ]; then
       for img in "''${IMAGES[@]}"; do
@@ -85,7 +85,6 @@ in
     ".config/matugen/config.toml".source = ./matugen/config.toml;
     ".config/matugen/templates/hyprland-colors.conf".source = ./matugen/templates/hyprland-colors.conf;
     ".config/matugen/templates/hyprland-colors.lua".source = ./matugen/templates/hyprland-colors.lua;
-    ".config/matugen/templates/rofi-colors.rasi".source = ./matugen/templates/rofi-colors.rasi;
     ".config/matugen/templates/alacritty-colors.toml".source = ./matugen/templates/alacritty-colors.toml;
     ".config/matugen/templates/kitty-colors.conf".source = ./matugen/templates/kitty-colors.conf;
   };

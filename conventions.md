@@ -151,7 +151,7 @@ All commits in this repository must follow the [Conventional Commits v1.0.0](htt
 
 ### 5.3 Allowed Scopes
 - **Core / Nix**: `flake`, `nix`, `home-manager`, `darwin`, `linux`
-- **Window Management**: `hyprland`, `waybar`, `rofi`, `yabai`, `skhd`, `sketchybar`, `aerospace`
+- **Window Management**: `hyprland`, `waybar`, `fuzzel`, `yabai`, `skhd`, `sketchybar`, `aerospace`
 - **Terminal & Multiplexers**: `tmux`, `zellij`, `ghostty`, `kitty`, `alacritty`, `wezterm`
 - **Shells**: `fish`, `nushell`, `zsh`, `bash`, `starship`
 - **Editors**: `nvim`, `zed`

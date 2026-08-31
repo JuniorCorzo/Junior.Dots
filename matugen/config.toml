@@ -11,9 +11,6 @@ input_path = "~/.config/matugen/templates/hyprland-colors.lua"
 output_path = "~/.config/hypr/colors.lua"
 post_hook = "hyprctl reload 2>/dev/null || true"
 
-[templates.rofi]
-input_path = "~/.config/matugen/templates/rofi-colors.rasi"
-output_path = "~/.config/rofi/colors.rasi"
 
 [templates.alacritty]
 input_path = "~/.config/matugen/templates/alacritty-colors.toml"

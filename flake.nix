@@ -74,7 +74,6 @@
             ./sketchybar.nix  # SketchyBar status bar (macOS)
             ./hyprland.nix  # Hyprland Wayland compositor configuration (Linux)
             ./matugen.nix  # Matugen Material You theming engine (Linux)
-            ./rofi.nix  # Rofi app launcher with Material You theming (Linux)
             ./quickshell.nix  # Quickshell desktop shell configuration (Linux)
             ./raycast.nix  # Raycast scripts
             {
