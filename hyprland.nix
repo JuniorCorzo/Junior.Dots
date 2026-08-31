@@ -3,6 +3,28 @@
   ...
 }:
 
+let
+  hyprQuickshellStart = pkgs.writeShellScriptBin "hypr-quickshell-start" ''
+    #!/usr/bin/env bash
+    export PATH="$HOME/.nix-profile/bin:$HOME/.local/state/nix/profiles/home-manager/home-path/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+    export qsConfig="end4-pC"
+
+    # Wait for Hyprland socket to be ready
+    for i in {1..50}; do
+      for sock in /run/user/$(id -u)/hypr/*/.socket.sock; do
+        if [ -S "$sock" ]; then
+          export HYPRLAND_INSTANCE_SIGNATURE=$(basename $(dirname "$sock"))
+          break 2
+        fi
+      done
+      sleep 0.1
+    done
+
+    pkill -9 qs 2>/dev/null || true
+    sleep 0.2
+    exec qs -c end4-pC
+  '';
+in
 {
   wayland.windowManager.hyprland = {
     enable = pkgs.stdenv.isLinux;
@@ -14,6 +36,7 @@
       "$mod" = "SUPER";
 
       env = [
+        "PATH,$HOME/.nix-profile/bin:$HOME/.local/state/nix/profiles/home-manager/home-path/bin:/usr/local/bin:/usr/bin:/bin"
         "qsConfig,end4-pC"
         "QT_QPA_PLATFORM,wayland;xcb"
         "GDK_BACKEND,wayland,x11,*"
@@ -28,7 +51,7 @@
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH"
         "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP PATH"
         "hypridle"
-        "qs -c end4-pC"
+        "${hyprQuickshellStart}/bin/hypr-quickshell-start"
         "wl-paste --type text --watch bash -c 'cliphist store && qs -c end4-pC ipc call cliphistService update'"
         "wl-paste --type image --watch bash -c 'cliphist store && qs -c end4-pC ipc call cliphistService update'"
       ];
@@ -236,6 +259,7 @@
   };
 
   home.packages = with pkgs; [
+    hyprQuickshellStart
     grim
     slurp
     wl-clipboard
