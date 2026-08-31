@@ -25,6 +25,7 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/qs \
+        --run 'if [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ]; then for sock in /run/user/$(id -u)/hypr/*/.socket.sock; do if [ -S "$sock" ]; then export HYPRLAND_INSTANCE_SIGNATURE=$(basename $(dirname "$sock")); break; fi; done; fi' \
         --prefix QML2_IMPORT_PATH : "${pkgs.qt6.qt5compat}/lib/qt-6/qml:${pkgs.qt6.qtdeclarative}/lib/qt-6/qml:${pkgs.qt6.qtsvg}/lib/qt-6/qml:${pkgs.qt6.qtwayland}/lib/qt-6/qml:${pkgs.qt6.qtmultimedia}/lib/qt-6/qml:${pkgs.qt6.qtpositioning}/lib/qt-6/qml:${pkgs.kdePackages.kirigami}/lib/qt-6/qml:${pkgs.kdePackages.syntax-highlighting}/lib/qt-6/qml" \
         --prefix LD_LIBRARY_PATH : "${pkgs.qt6.qtbase}/lib:${pkgs.qt6.qtdeclarative}/lib:${pkgs.qt6.qtwayland}/lib:${pkgs.qt6.qt5compat}/lib:${pkgs.qt6.qtpositioning}/lib:${pkgs.qt6.qtsvg}/lib:${pkgs.qt6.qtmultimedia}/lib:${pkgs.kdePackages.kirigami}/lib:${pkgs.kdePackages.syntax-highlighting}/lib:${pkgs.libGL}/lib:${pkgs.mesa}/lib:${pkgs.libglvnd}/lib" \
         --prefix LIBGL_DRIVERS_PATH : "/usr/lib64/dri" \
