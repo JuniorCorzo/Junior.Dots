@@ -16,6 +16,13 @@
         test -x $brew_bin; and eval ($brew_bin shellenv)
       end
 
+      if test (uname) != Darwin
+        if test -d /run/user/(id -u)/hypr
+          set -l active_sig (basename (ls -d /run/user/(id -u)/hypr/release* 2>/dev/null | tail -n 1))
+          test -n "$active_sig"; and set -gx HYPRLAND_INSTANCE_SIGNATURE $active_sig
+        end
+      end
+
       # pnpm 11 links global executables into PNPM_HOME/bin and validates that
       # directory is on PATH (pnpm 10 used PNPM_HOME directly).
       if test (uname) = Darwin
