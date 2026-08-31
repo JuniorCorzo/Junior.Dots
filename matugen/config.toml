@@ -11,11 +11,6 @@ input_path = "~/.config/matugen/templates/hyprland-colors.lua"
 output_path = "~/.config/hypr/colors.lua"
 post_hook = "hyprctl reload 2>/dev/null || true"
 
-[templates.waybar]
-input_path = "~/.config/matugen/templates/waybar-colors.css"
-output_path = "~/.config/waybar/colors.css"
-post_hook = "killall -SIGUSR2 waybar 2>/dev/null || true"
-
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"
 output_path = "~/.config/rofi/colors.rasi"

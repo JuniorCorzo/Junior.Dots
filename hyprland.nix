@@ -206,9 +206,9 @@
         swaybg -i "$(cat "$HOME/.config/hypr/current_wallpaper")" -m fill &
       fi
 
-      pkill -9 waybar 2>/dev/null || true
+      pkill -9 qs 2>/dev/null || true
       sleep 0.1
-      waybar &
+      qs -c end4-pC &
 
       pgrep -x swaync >/dev/null || swaync &
       pgrep -x wl-paste >/dev/null || wl-paste --watch cliphist store &
