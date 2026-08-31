@@ -52,15 +52,24 @@ lib.mkIf pkgs.stdenv.isLinux {
     brightnessctl
     wireplumber
     libqalculate
+    hyprpicker
+    wf-recorder
+    tesseract
+    fuzzel
+    ydotool
   ];
 
   home.sessionVariables = {
     QML2_IMPORT_PATH = "$HOME/.nix-profile/lib/qt-6/qml:$HOME/.local/state/nix/profiles/home-manager/home-path/lib/qt-6/qml";
     QT_PLUGIN_PATH = "$HOME/.nix-profile/lib/qt-6/plugins:$HOME/.local/state/nix/profiles/home-manager/home-path/lib/qt-6/plugins";
+    qsConfig = "end4-pC";
   };
 
   home.file = {
     ".config/quickshell/end4-pC".source = end4pC;
     ".config/quickshell/illogical-impulse".source = "${illogicalImpulse}/dots/.config/quickshell";
+    ".config/hypr/hyprland".source = "${illogicalImpulse}/dots/.config/hypr/hyprland";
+    ".config/hypr/hypridle.conf".source = "${illogicalImpulse}/dots/.config/hypr/hypridle.conf";
+    ".config/hypr/hyprlock.conf".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock.conf";
   };
 }
