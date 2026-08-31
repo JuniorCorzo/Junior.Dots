@@ -85,8 +85,14 @@ lib.mkIf pkgs.stdenv.isLinux {
     ".config/hypr/hypridle.conf".source = "${illogicalImpulse}/dots/.config/hypr/hypridle.conf";
     ".config/hypr/hyprlock.conf".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock.conf";
     ".config/hypr/hyprlock".source = "${illogicalImpulse}/dots/.config/hypr/hyprlock";
-    ".config/hypr/custom".source = "${illogicalImpulse}/dots/.config/hypr/custom";
+    ".config/hypr/custom/variables.lua".text = ''
+      hl.env("qsConfig", "end4-pC")
+    '';
+    ".config/hypr/custom/execs.lua".text = ''
+      hl.exec_cmd("hypr-quickshell-start")
+    '';
+    ".config/quickshell/ii".source = end4pC;
     ".config/quickshell/end4-pC".source = end4pC;
-    ".config/quickshell/illogical-impulse".source = "${illogicalImpulse}/dots/.config/quickshell";
+    ".config/quickshell/illogical-impulse".source = end4pC;
   };
 }
