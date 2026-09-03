@@ -170,6 +170,28 @@
         "$mod, S, togglespecialworkspace, special"
         "$mod SHIFT, S, movetoworkspace, special:special"
 
+        # Empty workspace navigation & move (pestaña vacía)
+        "$mod, backspace, workspace, empty"
+        "$mod SHIFT, backspace, movetoworkspace, empty"
+
+        # Previous workspace navigation & move (pestaña anterior)
+        "$mod, grave, workspace, previous"
+        "$mod SHIFT, grave, movetoworkspace, previous"
+
+        # Active workspace navigation & move (pestañas existentes / relativas)
+        "$mod, bracketleft, workspace, e-1"
+        "$mod, bracketright, workspace, e+1"
+        "$mod SHIFT, bracketleft, movetoworkspace, e-1"
+        "$mod SHIFT, bracketright, movetoworkspace, e+1"
+        "$mod CTRL, left, workspace, e-1"
+        "$mod CTRL, right, workspace, e+1"
+        "$mod CTRL SHIFT, left, movetoworkspace, e-1"
+        "$mod CTRL SHIFT, right, movetoworkspace, e+1"
+        "$mod, mouse_down, workspace, e+1"
+        "$mod, mouse_up, workspace, e-1"
+        "$mod SHIFT, mouse_down, movetoworkspace, e+1"
+        "$mod SHIFT, mouse_up, movetoworkspace, e-1"
+
         # Quickshell shortcuts (illogical-impulse / end4-pC)
         "$mod, SUPER_L, global, quickshell:searchToggleRelease"
         "$mod, SUPER_R, global, quickshell:searchToggleRelease"
