@@ -40,11 +40,14 @@ This repository provides a complete, declarative development environment configu
 
 ### 🤖 AI Integrations
 
-- **Claude Code CLI**: Primary AI coding assistant with 35 skills, SDD orchestrator workflow, Engram persistent memory, and custom Gentleman persona
+- **Antigravity (AGY)**: Primary AI development runtime managed declaratively via Nix, featuring a modular rules engine, Engram persistent memory, RTK token compression, and OpenSpec-integrated Spec-Driven Development (SDD)
+- **Claude Code CLI**: AI coding assistant with 35 skills, SDD orchestrator workflow, Engram persistent memory, and custom Gentleman persona
 - **OpenCode**: Multi-model AI assistant with 12 agents (gentleman, sdd-orchestrator, dangerous-gentleman + 9 SDD sub-agents), same 35 skills, multi-provider support
-- **Engram**: Persistent memory system for cross-session context and SDD artifact storage
+- **Engram**: Persistent memory system for cross-session context, architectural decisions, and artifact storage
+- **RTK (Rust Token Killer)**: Token-optimized proxy CLI reducing LLM context consumption by up to 90% across shell commands
+- **OpenSpec**: Repository-level specification standard (`.openspec/`) providing multi-tool interoperability and permanent audit trails
 - **MCP Servers**: Context7 (documentation), Notion (knowledge management)
-- **Gemini CLI**: Google's AI assistant (optional)
+- **Gemini CLI**: Google's AI assistant CLI tool (optional)
 
 ### 🔧 System Utilities
 
@@ -94,7 +97,7 @@ The flake automatically handles system-specific configurations, installs all dep
 | **Terminals**       | Ghostty, WezTerm, Tmux, Zellij (optional) |
 | **Editor**          | Neovim (LazyVim) + Zed                    |
 | **Languages**       | Node.js, Rust, Go, with Volta management  |
-| **AI Tools**        | Claude Code, OpenCode (12 agents), Engram, Herdr, Context7, Notion MCP |
+| **AI Tools**        | Antigravity (AGY), Claude Code, OpenCode (12 agents), Engram, RTK, OpenSpec, Herdr, Context7, Notion MCP |
 | **Navigation**      | Television, Yazi, Oil.nvim, Zoxide        |
 | **Development**     | Git, GitHub CLI, Lazy Git                 |
 | **Window Manager**  | Nehir (current); Yabai + Skhd + SketchyBar (legacy) |
@@ -132,13 +135,14 @@ The flake automatically handles system-specific configurations, installs all dep
 ├── zed/                   # Zed themes, keymaps, tasks, prompts
 │
 ├── # ─── AI Tools ───
+├── gemini.nix             # Antigravity (AGY) & Gemini CLI configuration
+├── gemini/                # AGY modular rules (persona, engram, rtk, tdd, codegraph), settings
 ├── claude.nix             # Claude Code CLI configuration
 ├── claude/                # Claude settings, 35 skills, themes, statusline, output styles
 ├── opencode.nix           # OpenCode AI configuration
 ├── opencode/              # OpenCode config, AGENTS.md, 35 skills, themes
 ├── engram.nix             # Engram persistent memory configuration
 ├── herdr.nix              # Herdr agent multiplexer configuration
-├── gemini.nix             # Gemini CLI configuration (optional)
 │
 ├── # ─── Window Management (macOS) ───
 ├── nehir.nix              # Nehir (Niri-style WM) config — current, config-only
@@ -608,11 +612,13 @@ Configurations are automatically deployed to:
 
 ### 🤖 AI Development Features
 
+- **Antigravity (AGY) Runtime**: Declarative agent environment managed via Nix with modular rules (`persona`, `engram`, `rtk`, `strict-tdd`, `codegraph`, `agent-routing`)
 - **Claude Code Integration**: Native AI coding assistant with 35 skills and SDD orchestrator
 - **OpenCode Multi-Agent**: 12 agents spanning multiple AI providers for SDD workflow
-- **Engram Memory**: Persistent cross-session memory for context and artifact storage
-- **MCP Servers**: Context7 for live documentation, Notion for knowledge management
-- **SDD Workflow**: Full Spec-Driven Development pipeline (explore → propose → spec → design → tasks → apply → verify → archive)
+- **Engram Memory**: Persistent cross-session memory for context, architectural decisions, and artifact storage
+- **RTK Token Killer**: Up to 90% token reduction across shell interactions via Rust Token Killer proxy
+- **MCP Servers**: Context7 for live documentation, Notion for knowledge management, CodeGraph for AST symbol exploration
+- **OpenSpec SDD Workflow**: Unified Spec-Driven Development pipeline (brainstorming → writing-plans → subagent-driven-development → finishing-a-development-branch)
 
 ### 🎨 Theming & Customization
 
@@ -753,6 +759,30 @@ Some configurations are commented out by default. To enable them:
    - Integrated via Bun package manager
    - Direct access with `gemini` command
    - Perfect for AI-powered development workflows
+
+## 🛸 Antigravity (AGY) & Spec-Driven Development Workflow
+
+Gentleman.Dots features a first-class, deterministic AI engineering environment powered by **Antigravity (AGY)** and integrated with **OpenSpec** (`@fission-ai/openspec`) and **Superpowers**.
+
+> 📖 **Comprehensive Documentation**: See [`docs/antigravity-workflow.md`](docs/antigravity-workflow.md) for full architectural specifications, sequence diagrams, and detailed protocol rules.
+
+### Core Architectural Highlights
+
+- **Declarative Nix Management (`gemini.nix`)**: All AGY directives, system instructions, and runtime rules are version-controlled in `gemini/` and declaratively symlinked to `~/.gemini/` (`~/.gemini/GEMINI.md`, `~/.gemini/rules/*.md`, `~/.gemini/settings.json`).
+- **Modular Rules Engine (`~/.gemini/rules/`)**:
+  - `persona.md`: Senior Architect (GDE & MVP) persona, Caveman Mode Ultra (dense, telegraphic responses), blocking Conventions Gate (`conventions.md`), mandatory writer subagent delegation, and verification subagents.
+  - `engram.md`: Proactive persistent memory protocol across sessions (`mem_save`, `mem_search`, `mem_session_summary`) with strict delivery guarantees.
+  - `strict-tdd.md`: Red-Green-Refactor test-driven development cycle enforced on all code additions.
+  - `rtk.md`: Token minimization via Rust Token Killer proxy CLI wrapping all shell interactions (`rtk git`, `rtk cargo`, etc.) to cut token usage by up to 90%.
+  - `codegraph.md`: AST-aware symbol navigation priority using `codegraph_explore` MCP tool over raw grep.
+  - `agent-routing.md`: Minimal topology enforcement (direct inline vs. delegated direct) and user kill switches.
+  - `superpowers.md`: Strict binding between Superpowers framework skills and mandatory system directives.
+- **Spec-Driven Development (SDD) & OpenSpec Integration**:
+  1. **Brainstorming (`/superpowers:brainstorming`)**: Explores requirements and generates an active Change Folder in `.openspec/changes/YYYY-MM-DD-<feature>/` containing `proposal.md`, `design.md`, `tasks.md`, and delta specs in `specs/`.
+  2. **Writing Plans (`writing-plans`)**: Consumes `tasks.md` and generates `plan.md` in the Change Folder with explicit test code, commands, and TDD steps.
+  3. **Subagent-Driven Development (`subagent-driven-development`)**: Orchestrator delegates atomic tasks to dedicated writer subagents following strict TDD, audited by an independent verification subagent.
+  4. **Branch Finalization (`finishing-a-development-branch`)**: Step 0 runs `opsx sync` to update `.openspec/system/` and `opsx archive` to move completed features into `.openspec/archive/`.
+- **Multi-Tool Interoperability**: Repository-tracked specifications in `.openspec/` form a living contract accessible across Claude Code, OpenCode, Cursor, and other AI tools without vendor lock-in.
 
 ## 🤖 Claude Code CLI Configuration
 
