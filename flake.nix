@@ -64,6 +64,7 @@
             ./starship.nix  # Starship prompt configuration
             ./nvim.nix  # Neovim configuration
             ./zsh.nix  # Zsh configuration
+            ./bash.nix  # Bash configuration
             ./oil-scripts.nix  # Oil.nvim scripts configuration
             ./opencode.nix  # OpenCode AI assistant configuration
             ./claude.nix  # Claude Code CLI configuration
