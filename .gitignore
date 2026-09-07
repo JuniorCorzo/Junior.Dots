@@ -1,20 +1,31 @@
-# Installer binaries
-installer/gentleman.dots
-installer/gentleman-test
-installer/dist/
+# Nix build outputs
+result
+result-*
 
-# E2E test artifacts
-installer/e2e/gentleman-installer-*
+# Nix garbage collection links
+.gcroots
 
-# Generated AI instruction files (from AGENTS.md via ./skills/setup.sh)
-# AGENTS.md is the single source of truth - do not edit these directly
-CLAUDE.md
-GEMINI.md
-CODEX.md
-.github/copilot-instructions.md
-# Local AI agent runtime state
+# Home Manager backup files
+backup
+
+# OpenCode directory
+.opencode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Local Pi runtime state
 .atl/
 .pi/
-.pi-lens/
 .codegraph/
-**/.pi-lens/

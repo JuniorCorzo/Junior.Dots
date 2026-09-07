@@ -1,0 +1,158 @@
+{
+  description = "Gentleman: Single config for all systems in one go";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";  # Home Manager repository
+      inputs.nixpkgs.follows = "nixpkgs";  # Follow nixpkgs input
+    };
+    spicetify.url = "git+https://github.com/Gerg-L/spicetify-nix";
+  };
+
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, spicetify, ... }:
+    let
+      # Supported systems
+      supportedSystems = [ "x86_64-linux" ];
+      
+      # ─── User Configuration ───
+      username = "juniorcorzo";
+
+      # Function to create home configuration for a specific system
+      mkHomeConfiguration = system:
+        let
+          pkgs = import nixpkgs {
+            localSystem = { inherit system; };
+            config.allowUnfree = true;
+          };
+          nodeWithoutNpm = pkgs.runCommand "nodejs-without-npm-${pkgs.nodejs.version}" { } ''
+            mkdir -p "$out/bin"
+            ln -s ${pkgs.nodejs}/bin/node "$out/bin/node"
+            ln -s ${pkgs.nodejs}/bin/corepack "$out/bin/corepack"
+          '';
+          
+          unstablePkgs = import nixpkgs-unstable {
+            localSystem = { inherit system; };
+            config.allowUnfree = true;
+          };
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          
+          # Pass extraSpecialArgs to make unstablePkgs and spicetify available in modules
+          extraSpecialArgs = {
+            inherit unstablePkgs spicetify;
+          };
+          
+          modules = [
+            spicetify.homeManagerModules.default
+            ./spicetify.nix
+            ./nushell.nix  # Nushell configuration
+            ./ghostty.nix  # Ghostty configuration
+            ./alacritty.nix  # Alacritty configuration
+            ./zed.nix  # Zed configuration
+            ./television.nix  # Television configuration
+            ./wezterm.nix  # WezTerm configuration
+            ./kitty.nix  # Kitty configuration
+            ./zellij.nix  # Zellij configuration
+            ./tmux.nix  # Tmux configuration
+            ./tmux-agents.nix  # Tmux agent-state notifier (working/blocked/idle)
+            ./fish.nix  # Fish shell configuration
+            ./starship.nix  # Starship prompt configuration
+            ./nvim.nix  # Neovim configuration
+            ./zsh.nix  # Zsh configuration
+            ./bash.nix  # Bash configuration
+            ./oil-scripts.nix  # Oil.nvim scripts configuration
+            ./opencode.nix  # OpenCode AI assistant configuration
+            ./claude.nix  # Claude Code CLI configuration
+            ./gemini.nix  # Gemini CLI (AGY) + Antigravity config
+            ./engram.nix  # Engram memory layer for AI agents
+            ./herdr.nix  # Herdr agent multiplexer configuration
+            ./hyprland.nix  # Hyprland Wayland compositor configuration (Linux)
+            ./matugen.nix  # Matugen Material You theming engine (Linux)
+            ./quickshell.nix  # Quickshell desktop shell configuration (Linux)
+            {
+              # Personal data
+              home.username = username;
+              home.homeDirectory = "/home/${username}";
+              home.stateVersion = "24.11";  # State version
+
+              # Base packages that should be available everywhere
+              home.packages = with pkgs; [
+                # ─── Terminals and utilities ───
+                zellij
+                tmux
+                fish
+                zsh
+                nushell
+
+                # ─── Development tools ───
+                volta
+                carapace
+                zoxide
+                direnv
+                atuin
+                jq
+                bash
+                starship
+                fzf
+                nodeWithoutNpm
+                unstablePkgs.pnpm
+                bun
+                cargo
+                go
+                gopls
+                pkg-config
+                mpv
+                (lib.getDev mpv)
+                nil
+                unstablePkgs.nixd
+                unstablePkgs.neovim
+                tree-sitter
+                unstablePkgs.codegraph
+
+                # ─── Compilers and system utilities ───
+                gcc
+                fd
+                ripgrep
+                coreutils
+                unzip
+                bat
+                lazygit
+                yazi
+                television
+
+                # ─── Nerd Fonts ───
+                nerd-fonts.iosevka-term
+              ];
+
+              # Enable programs explicitly (critical for binaries to appear)
+              # All program enables are centralized here
+              programs.neovim.enable = false;
+              programs.fish.enable = true;
+              programs.nushell.enable = true;
+              programs.starship.enable = false;
+              programs.zsh.enable = false;  # Managed via home.file in zsh.nix
+              programs.git.enable = true;
+              programs.gh.enable = true;  # GitHub CLI
+              programs.home-manager.enable = true;
+              # Note: tmux is configured via home.file in tmux.nix, not programs.tmux
+
+              # NOTE: home.sessionVariables removed - it generates a recursive .zshenv bug
+              # XDG_CONFIG_HOME is set in shell configs instead
+
+              # Allow unfree packages
+              nixpkgs.config.allowUnfree = true;
+            }
+          ];
+        };
+    in
+    {
+      # Home Manager configurations
+      homeConfigurations = {
+        "gentleman" = mkHomeConfiguration "x86_64-linux";
+        "gentleman-linux" = mkHomeConfiguration "x86_64-linux";
+      };
+    };
+}
