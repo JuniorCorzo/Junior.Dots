@@ -73,6 +73,27 @@ let
       --replace-fail 'Quickshell.execDetached([Directories.wallpaperSwitchScriptPath' \
                      'Quickshell.execDetached(["wallchange", path]);
         Quickshell.execDetached([Directories.wallpaperSwitchScriptPath'
+
+    # 6. Enable clipping and minimum height on CenterWidgetGroup
+    substituteInPlace $out/modules/ii/sidebarRight/CenterWidgetGroup.qml \
+      --replace-fail 'color: Appearance.colors.colLayer1' \
+                     'color: Appearance.colors.colLayer1
+    clip: true
+    Layout.minimumHeight: 120'
+
+    # 7. Add minimum height constraint to CenterWidgetGroup in SidebarRightContent
+    substituteInPlace $out/modules/ii/sidebarRight/SidebarRightContent.qml \
+      --replace-fail '            CenterWidgetGroup {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }' \
+                     '            CenterWidgetGroup {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.minimumHeight: 120
+                }'
   '';
 
   wrappedQuickshell = pkgs.symlinkJoin {
