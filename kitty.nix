@@ -93,6 +93,11 @@
     map cmd+backspace send_text all \x15
     map cmd+delete send_text all \x0b
 
+    # Background opacity controls.
+    map ctrl+shift+equal  set_background_opacity +0.05
+    map ctrl+shift+minus  set_background_opacity -0.05
+    map ctrl+shift+0      set_background_opacity default
+
     # Ghostty's write_screen_file/write_scrollback_file actions do not have a direct
     # Kitty equivalent. Use Kitty scrollback tools manually when needed.
 
