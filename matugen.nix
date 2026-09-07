@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
   wallchange = pkgs.writeShellScriptBin "wallchange" ''
