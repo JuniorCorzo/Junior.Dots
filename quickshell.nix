@@ -82,7 +82,13 @@ let
     implicitHeight: 180
     Layout.minimumHeight: 120'
 
-    # 7. Enable flickable scroll in SidebarRightContent
+    # 7. Remove clip and expand BottomWidgetGroup height so calendar renders fully
+    substituteInPlace $out/modules/ii/sidebarRight/BottomWidgetGroup.qml \
+      --replace-fail 'clip: true' 'clip: false' \
+      --replace-fail 'implicitHeight: collapsed ? collapsedBottomWidgetGroupRow.implicitHeight : 350' \
+                     'implicitHeight: collapsed ? collapsedBottomWidgetGroupRow.implicitHeight : 450'
+
+    # 8. Enable flickable scroll in SidebarRightContent
     substituteInPlace $out/modules/ii/sidebarRight/SidebarRightContent.qml \
       --replace-fail '        ColumnLayout {
                 anchors.fill: parent
@@ -93,13 +99,14 @@ let
                 anchors.fill: parent
                 anchors.margins: sidebarPadding
                 contentWidth: width
-                contentHeight: sidebarLayout.implicitHeight
+                contentHeight: sidebarLayout.height
                 clip: true
                 boundsBehavior: Flickable.StopAtBounds
 
                 ColumnLayout {
                     id: sidebarLayout
                     width: contentFlickable.width
+                    height: implicitHeight
                     spacing: sidebarPadding' \
       --replace-fail '            CenterWidgetGroup {
                     Layout.alignment: Qt.AlignHCenter
