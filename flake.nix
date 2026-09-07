@@ -8,17 +8,15 @@
       url = "github:nix-community/home-manager";  # Home Manager repository
       inputs.nixpkgs.follows = "nixpkgs";  # Follow nixpkgs input
     };
-    flake-utils.url = "github:numtide/flake-utils";  # Flake utilities
     spicetify.url = "git+https://github.com/Gerg-L/spicetify-nix";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, flake-utils, spicetify, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, spicetify, ... }:
     let
-      # Support macOS and Linux systems
-      supportedSystems = [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" ];
+      # Supported systems
+      supportedSystems = [ "x86_64-linux" ];
       
       # ─── User Configuration ───
-      # Change this to your macOS username
       username = "juniorcorzo";
 
       # Function to create home configuration for a specific system
@@ -68,19 +66,16 @@
             ./oil-scripts.nix  # Oil.nvim scripts configuration
             ./opencode.nix  # OpenCode AI assistant configuration
             ./claude.nix  # Claude Code CLI configuration
+            ./gemini.nix  # Gemini CLI (AGY) + Antigravity config
             ./engram.nix  # Engram memory layer for AI agents
             ./herdr.nix  # Herdr agent multiplexer configuration
-            ./yabai.nix  # Yabai window manager configuration (macOS)
-            ./skhd.nix  # Skhd hotkey daemon configuration (macOS)
-            ./sketchybar.nix  # SketchyBar status bar (macOS)
             ./hyprland.nix  # Hyprland Wayland compositor configuration (Linux)
             ./matugen.nix  # Matugen Material You theming engine (Linux)
             ./quickshell.nix  # Quickshell desktop shell configuration (Linux)
-            ./raycast.nix  # Raycast scripts
             {
               # Personal data
               home.username = username;
-              home.homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
+              home.homeDirectory = "/home/${username}";
               home.stateVersion = "24.11";  # State version
 
               # Base packages that should be available everywhere
@@ -91,9 +86,6 @@
                 fish
                 zsh
                 nushell
-
-                # ─── Window management (macOS) ───
-                # yabai, skhd, and sketchybar are installed via Homebrew modules.
 
                 # ─── Development tools ───
                 volta
@@ -157,15 +149,9 @@
         };
     in
     {
-      # Home Manager configurations for each system
+      # Home Manager configurations
       homeConfigurations = {
-        # macOS system configurations
-        "gentleman-macos-intel" = mkHomeConfiguration "x86_64-darwin";
-        "gentleman-macos-arm" = mkHomeConfiguration "aarch64-darwin";
-        
-        # Default to Apple Silicon
-        "gentleman" = mkHomeConfiguration "aarch64-darwin";
-
+        "gentleman" = mkHomeConfiguration "x86_64-linux";
         "gentleman-linux" = mkHomeConfiguration "x86_64-linux";
       };
     };
