@@ -10,7 +10,9 @@ let
       exit 1
     fi
 
-    WALLPAPER="''${1#file://}"
+    WALLPAPER="''${1%\"}"
+    WALLPAPER="''${WALLPAPER#\"}"
+    WALLPAPER="''${WALLPAPER#file://}"
     WALLPAPER="''${WALLPAPER%\"}"
     WALLPAPER="''${WALLPAPER#\"}"
 
