@@ -148,6 +148,10 @@ lib.mkIf pkgs.stdenv.isLinux {
     hypridle
     hyprsunset
     ddcutil
+    bc
+    imagemagick
+    ffmpeg
+    mpvpaper
   ];
 
   home.sessionVariables = {
