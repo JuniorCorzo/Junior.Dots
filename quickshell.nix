@@ -67,6 +67,12 @@ let
     # 4. Use hyprlock by default
     substituteInPlace $out/modules/common/Config.qml \
       --replace-fail "property bool useHyprlock: false" "property bool useHyprlock: true"
+
+    # 5. Integrate wallchange in Wallpapers.qml apply function
+    substituteInPlace $out/services/Wallpapers.qml \
+      --replace-fail 'Quickshell.execDetached([Directories.wallpaperSwitchScriptPath' \
+                     'Quickshell.execDetached(["wallchange", path]);
+        Quickshell.execDetached([Directories.wallpaperSwitchScriptPath'
   '';
 
   wrappedQuickshell = pkgs.symlinkJoin {

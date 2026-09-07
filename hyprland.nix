@@ -31,6 +31,7 @@
         "hypridle"
         "wl-paste --type text --watch bash -c 'cliphist store && qs -c end4-pC ipc call cliphistService update'"
         "wl-paste --type image --watch bash -c 'cliphist store && qs -c end4-pC ipc call cliphistService update'"
+        "bash -c '[ -f $HOME/.config/hypr/current_wallpaper ] && swaybg -i \"$(cat $HOME/.config/hypr/current_wallpaper)\" -m fill'"
       ];
 
       input = {
