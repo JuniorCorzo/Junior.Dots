@@ -10,7 +10,9 @@ let
       exit 1
     fi
 
-    WALLPAPER="$1"
+    WALLPAPER="''${1#file://}"
+    WALLPAPER="''${WALLPAPER%\"}"
+    WALLPAPER="''${WALLPAPER#\"}"
 
     if [ ! -f "$WALLPAPER" ]; then
       echo "Error: File '$WALLPAPER' does not exist."
@@ -26,7 +28,7 @@ let
     echo "$WALLPAPER" > "$HOME/.config/hypr/current_wallpaper"
 
     pkill -x swaybg 2>/dev/null || true
-    swaybg -i "$WALLPAPER" -m fill &
+    nohup swaybg -i "$WALLPAPER" -m fill >/dev/null 2>&1 &
 
     echo "✨ Theme and wallpaper updated successfully!"
   '';

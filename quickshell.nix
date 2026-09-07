@@ -71,7 +71,7 @@ let
     # 5. Integrate wallchange in Wallpapers.qml apply function
     substituteInPlace $out/services/Wallpapers.qml \
       --replace-fail 'Quickshell.execDetached([Directories.wallpaperSwitchScriptPath' \
-                     'Quickshell.execDetached(["wallchange", path]);
+                     'Quickshell.execDetached(["wallchange", FileUtils.trimFileProtocol(path)]);
         Quickshell.execDetached([Directories.wallpaperSwitchScriptPath'
 
     # 6. Enable clipping and minimum height on CenterWidgetGroup
@@ -79,10 +79,28 @@ let
       --replace-fail 'color: Appearance.colors.colLayer1' \
                      'color: Appearance.colors.colLayer1
     clip: true
+    implicitHeight: 180
     Layout.minimumHeight: 120'
 
-    # 7. Add minimum height constraint to CenterWidgetGroup in SidebarRightContent
+    # 7. Enable flickable scroll in SidebarRightContent
     substituteInPlace $out/modules/ii/sidebarRight/SidebarRightContent.qml \
+      --replace-fail '        ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: sidebarPadding
+                spacing: sidebarPadding' \
+                     '        StyledFlickable {
+                id: contentFlickable
+                anchors.fill: parent
+                anchors.margins: sidebarPadding
+                contentWidth: width
+                contentHeight: sidebarLayout.implicitHeight
+                clip: true
+                boundsBehavior: Flickable.StopAtBounds
+
+                ColumnLayout {
+                    id: sidebarLayout
+                    width: contentFlickable.width
+                    spacing: sidebarPadding' \
       --replace-fail '            CenterWidgetGroup {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillHeight: true
@@ -90,10 +108,28 @@ let
                 }' \
                      '            CenterWidgetGroup {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.fillHeight: true
                     Layout.fillWidth: true
-                    Layout.minimumHeight: 120
-                }'
+                    implicitHeight: 180
+                }' \
+      --replace-fail '            BottomWidgetGroup {
+                    visible: Config.options.sidebar.bottomGroup
+                    id: bottomWidgetGroup
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillHeight: false
+                    Layout.fillWidth: true
+                }
+            }
+        }' \
+                     '            BottomWidgetGroup {
+                    visible: Config.options.sidebar.bottomGroup
+                    id: bottomWidgetGroup
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillHeight: false
+                    Layout.fillWidth: true
+                }
+            }
+            }
+        }'
   '';
 
   wrappedQuickshell = pkgs.symlinkJoin {
